@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore')
 
 st.set_page_config(
     page_title="Fortune 500 Analytics Dashboard",
-    page_icon="WhatsApp Image 2026-02-11 at 3.12.17 PM.jpeg",
+    page_icon="WhatsApp Image 2026-02-11 at 3.17.53 PM.jpeg",
     layout="wide",
     initial_sidebar_state="expanded"
 )
