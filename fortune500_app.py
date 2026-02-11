@@ -64,7 +64,7 @@ st.markdown(f"""
 }}
 
 .stButton > button {{
-    background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%) !important;
+    background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%) !important;
     color: white !important;
     border: none !important;
     border-radius: 12px !important;
@@ -77,8 +77,8 @@ st.markdown(f"""
 
 .stButton > button:hover {{
     transform: translateY(-3px) !important;
-    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4) !important;
-    background: linear-gradient(135deg, #7C3AED 0%, #2563EB 100%) !important;
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4) !important;
+    background: linear-gradient(135deg, #FF1493 0%, #C71585 100%) !important;
 }}
 
 .stTabs [data-baseweb="tab-list"] {{
@@ -100,10 +100,10 @@ st.markdown(f"""
 }}
 
 .stTabs [aria-selected="true"] {{
-    background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%) !important;
+    background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%) !important;
     color: white !important;
     border: none;
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
 }}
 
 .stSelectbox, .stDropdown {{
@@ -181,7 +181,7 @@ h1, h2, h3, h4, h5, h6 {{
 }}
 
 .stDataFrame th {{
-    background: rgba(139, 92, 246, 0.3) !important;
+    background: rgba(255, 105, 180, 0.3) !important;
     color: white !important;
     font-weight: 600 !important;
 }}
@@ -206,7 +206,7 @@ h1, h2, h3, h4, h5, h6 {{
 }}
 
 .developer {{
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%) !important;
+    background: linear-gradient(135deg, rgba(255, 105, 180, 0.2) 0%, rgba(255, 20, 147, 0.2) 100%) !important;
     backdrop-filter: blur(10px) !important;
     padding: 20px !important;
     border-radius: 16px !important;
@@ -236,7 +236,7 @@ h1, h2, h3, h4, h5, h6 {{
 hr {{
     border: none !important;
     height: 2px !important;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent) !important;
+    background: linear-gradient(90deg, transparent, rgba(255,105,180,0.5), transparent) !important;
     margin: 30px 0 !important;
 }}
 
@@ -249,6 +249,20 @@ hr {{
     color: white !important;
     border: 1px solid rgba(255,255,255,0.2) !important;
     border-radius: 8px !important;
+}}
+
+div[data-testid="stMetric"]:nth-of-type(1) {{
+    background: linear-gradient(135deg, rgba(255, 105, 180, 0.3) 0%, rgba(255, 20, 147, 0.3) 100%) !important;
+    border: 1px solid rgba(255, 105, 180, 0.5) !important;
+}}
+
+div[data-testid="stMetric"]:nth-of-type(1) label {{
+    color: #FFB6C1 !important;
+}}
+
+div[data-testid="stMetric"]:nth-of-type(1) div {{
+    color: #FF69B4 !important;
+    text-shadow: 1px 1px 3px rgba(255,105,180,0.3) !important;
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -293,7 +307,7 @@ if df.empty:
 df['profit_margin'] = (df['profit_mil'] / df['revenue_mil']) * 100
 
 colors = {
-    'primary': '#8B5CF6',
+    'primary': '#FF69B4',
     'secondary': '#3B82F6',
     'accent1': '#10B981',
     'accent2': '#F59E0B',
@@ -301,11 +315,13 @@ colors = {
     'success': '#10B981',
     'danger': '#EF4444',
     'warning': '#F59E0B',
-    'info': '#3B82F6'
+    'info': '#3B82F6',
+    'pink': '#FF69B4',
+    'hotpink': '#FF1493'
 }
 
 st.markdown(f"""
-<div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.9) 0%, rgba(59, 130, 246, 0.9) 100%);
+<div style="background: linear-gradient(135deg, rgba(255, 105, 180, 0.9) 0%, rgba(59, 130, 246, 0.9) 100%);
             backdrop-filter: blur(12px);
             padding: 40px; 
             border-radius: 25px; 
@@ -337,7 +353,7 @@ st.markdown(f"""
 
 with st.sidebar:
     st.markdown(f"""
-    <div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(59, 130, 246, 0.25) 100%);
+    <div style="background: linear-gradient(135deg, rgba(255, 105, 180, 0.25) 0%, rgba(59, 130, 246, 0.25) 100%);
                 backdrop-filter: blur(12px);
                 padding: 25px; 
                 border-radius: 20px; 
@@ -479,7 +495,7 @@ elif menu == _("Year Comparison", "مقارنة السنوات"):
         fig = go.Figure()
         fig.add_trace(go.Bar(name=_("Total Revenue", "إجمالي الإيرادات"), 
                             x=comp[_("Year", "السنة")], y=comp[_("Total Revenue", "إجمالي الإيرادات")],
-                            marker_color='#8B5CF6'))
+                            marker_color='#FF69B4'))
         fig.add_trace(go.Bar(name=_("Avg Revenue", "متوسط الإيرادات"), 
                             x=comp[_("Year", "السنة")], y=comp[_("Avg Revenue", "متوسط الإيرادات")],
                             marker_color='#3B82F6'))
@@ -620,7 +636,7 @@ else:
                        ))
     
     fig.add_trace(go.Scatter(x=yearly['year'], y=yearly['revenue_mil'], 
-                            name=_("Revenue","الإيرادات"), line=dict(color='#8B5CF6', width=3)), row=1, col=1)
+                            name=_("Revenue","الإيرادات"), line=dict(color='#FF69B4', width=3)), row=1, col=1)
     fig.add_trace(go.Scatter(x=yearly['year'], y=yearly['profit_mil'], 
                             name=_("Profit","الأرباح"), line=dict(color='#10B981', width=3)), row=2, col=1)
     fig.add_trace(go.Scatter(x=yearly['year'], y=yearly['profit_margin'], 
@@ -651,7 +667,7 @@ else:
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown(f"""
-<div style="background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(20,25,40,0.7) 100%);
+<div style="background: linear-gradient(135deg, rgba(255,105,180,0.7) 0%, rgba(20,25,40,0.7) 100%);
             backdrop-filter: blur(12px);
             border-radius: 20px;
             padding: 30px;
