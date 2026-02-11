@@ -245,25 +245,111 @@ elif menu == _("Year Comparison", "مقارنة السنوات"):
 elif menu == _("Predictions & Models", "التوقعات والنماذج"):
     st.markdown('<div class="custom-card">', unsafe_allow_html=True)
     st.header(_("Predictions & AI Models", "التوقعات والنماذج الذكية"))
+    
     if not data['pred2024'].empty:
         st.subheader(_("2024 Predictions", "توقعات 2024"))
-        top_pred = data['pred2024'].nlargest(20, 'predicted_revenue_mil')
-        fig = px.bar(top_pred, x='predicted_revenue_mil', y='name', orientation='h',
-                    title=_("Top 20 Predicted Companies 2024", "أفضل 20 شركة متوقعة 2024"),
-                    color='predicted_revenue_mil')
-        fig.update_layout(plot_bgcolor='white', paper_bgcolor='white', height=500)
-        st.plotly_chart(fig, use_container_width=True)
-        st.dataframe(data['pred2024'], use_container_width=True)
+        df_pred = data['pred2024']
+        
+        revenue_col = None
+        name_col = None
+        rank_col = None
+        
+        for col in df_pred.columns:
+            col_lower = col.lower()
+            if 'revenue' in col_lower or 'rev' in col_lower or 'pred' in col_lower:
+                revenue_col = col
+            if 'name' in col_lower or 'company' in col_lower:
+                name_col = col
+            if 'rank' in col_lower:
+                rank_col = col
+        
+        if revenue_col is None and len(df_pred.select_dtypes(include=[np.number]).columns) > 0:
+            revenue_col = df_pred.select_dtypes(include=[np.number]).columns[0]
+        
+        display_cols = []
+        if name_col:
+            display_cols.append(name_col)
+        if revenue_col:
+            display_cols.append(revenue_col)
+        if rank_col:
+            display_cols.append(rank_col)
+        
+        if revenue_col and name_col:
+            df_pred_sorted = df_pred.sort_values(revenue_col, ascending=False).head(20)
+            fig = px.bar(df_pred_sorted, x=revenue_col, y=name_col, orientation='h',
+                        title=_("Top 20 Predicted Companies 2024", "أفضل 20 شركة متوقعة 2024"),
+                        color=revenue_col, color_continuous_scale='viridis')
+            fig.update_layout(plot_bgcolor='white', paper_bgcolor='white', height=500)
+            st.plotly_chart(fig, use_container_width=True)
+        elif revenue_col:
+            df_pred_sorted = df_pred.sort_values(revenue_col, ascending=False).head(20)
+            fig = px.bar(df_pred_sorted, x=revenue_col, y=df_pred_sorted.index, orientation='h',
+                        title=_("Top 20 Predictions 2024", "أفضل 20 توقع 2024"),
+                        color=revenue_col, color_continuous_scale='viridis')
+            fig.update_layout(plot_bgcolor='white', paper_bgcolor='white', height=500)
+            st.plotly_chart(fig, use_container_width=True)
+        
+        if display_cols:
+            st.dataframe(df_pred[display_cols].head(50), use_container_width=True)
+        else:
+            st.dataframe(df_pred.head(50), use_container_width=True)
+    else:
+        st.info(_("2024 predictions file not available", "ملف توقعات 2024 غير متوفر"))
+    
     if not data['models'].empty:
         st.subheader(_("Model Performance", "أداء النماذج"))
-        if 'accuracy' in data['models'].columns:
-            fig = px.bar(data['models'], x='model_name', y='accuracy', title=_("Model Accuracy", "دقة النماذج"), color='accuracy')
-            fig.update_layout(plot_bgcolor='white', paper_bgcolor='white', height=400)
-            st.plotly_chart(fig, use_container_width=True)
-        st.dataframe(data['models'], use_container_width=True)
+        df_models = data['models']
+        
+        model_col = None
+        accuracy_col = None
+        
+        for col in df_models.columns:
+            col_lower = col.lower()
+            if 'model' in col_lower or 'name' in col_lower:
+                model_col = col
+            if 'acc' in col_lower or 'score' in col_lower or 'r2' in col_lower:
+                accuracy_col = col
+        
+        if accuracy_col:
+            if model_col:
+                fig = px.bar(df_models, x=model_col, y=accuracy_col, 
+                           title=_("Model Accuracy", "دقة النماذج"),
+                           color=accuracy_col, color_continuous_scale='rdylgn')
+                fig.update_layout(plot_bgcolor='white', paper_bgcolor='white', height=400, xaxis_tickangle=45)
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                fig = px.bar(df_models, y=accuracy_col, 
+                           title=_("Model Accuracy", "دقة النماذج"),
+                           color=accuracy_col, color_continuous_scale='rdylgn')
+                fig.update_layout(plot_bgcolor='white', paper_bgcolor='white', height=400)
+                st.plotly_chart(fig, use_container_width=True)
+        
+        st.dataframe(df_models, use_container_width=True)
+    
     if not data['test'].empty:
         st.subheader(_("Test Predictions", "توقعات الاختبار"))
-        st.dataframe(data['test'].head(50), use_container_width=True)
+        df_test = data['test']
+        
+        actual_col = None
+        predicted_col = None
+        
+        for col in df_test.columns:
+            col_lower = col.lower()
+            if 'actual' in col_lower or 'true' in col_lower:
+                actual_col = col
+            if 'pred' in col_lower or 'predict' in col_lower:
+                predicted_col = col
+        
+        if actual_col and predicted_col:
+            fig = px.scatter(df_test.head(100), x=actual_col, y=predicted_col,
+                           title=_("Actual vs Predicted", "الفعلية مقابل المتوقعة"),
+                           trendline='ols',
+                           labels={actual_col: _("Actual", "فعلية"), predicted_col: _("Predicted", "متوقعة")})
+            fig.update_layout(plot_bgcolor='white', paper_bgcolor='white', height=500)
+            st.plotly_chart(fig, use_container_width=True)
+        
+        st.dataframe(df_test.head(50), use_container_width=True)
+    
     st.markdown('</div>', unsafe_allow_html=True)
 
 else:
