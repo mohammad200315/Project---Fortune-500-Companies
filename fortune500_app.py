@@ -847,17 +847,3 @@ numpy>=1.24.0
 plotly>=5.17.0
 """
 
-# ====================== تعليمات النشر على Streamlit Cloud ======================
-"""
-للنشر على Streamlit Cloud:
-
-1. احفظ هذا الكود كـ `app.py`
-2. أنشئ ملف `requirements.txt` بالمحتوى أعلاه
-3. تأكد من وجود جميع ملفات CSV في نفس المجلد
-4. ارفع إلى GitHub
-5. في Streamlit Cloud:
-   Repository: your-username/repo-name
-   Branch: main
-   Main file path: app.py
-   App URL: fortune500-dashboard
-"""
