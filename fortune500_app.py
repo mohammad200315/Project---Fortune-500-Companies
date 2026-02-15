@@ -35,6 +35,32 @@ footer {{visibility: hidden;}}
 .stDeployButton {{display: none;}}
 .stAppToolbar {{display: none;}}
 
+/* إخفاء الـ header العلوي بالكامل */
+header {{
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}}
+
+.stApp header {{
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+}}
+
+[data-testid="stHeader"] {{
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+}}
+
+/* إزالة المسافة العلوية */
+.main .block-container {{
+    padding-top: 1rem !important;
+}}
+
 /* تنسيق خلفية التطبيق */
 .stApp {{
     background-image: url("data:image/jpeg;base64,{background_image_base64}");
