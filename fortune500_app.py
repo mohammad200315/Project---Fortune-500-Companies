@@ -27,7 +27,11 @@ profile_image_path = r"WhatsApp Image 2026-02-10 at 1.34.39 PM.jpeg"
 background_image_base64 = get_base64_of_image(background_image_path)
 profile_image_base64 = get_base64_of_image(profile_image_path)
 
-# ==================== CUSTOM CSS WITH JS BUTTON ====================
+# ==================== SESSION STATE FOR SIDEBAR ====================
+if 'show_sidebar' not in st.session_state:
+    st.session_state.show_sidebar = True
+
+# ==================== CUSTOM CSS ====================
 st.markdown(f"""
 <style>
 /* إخفاء عناصر Streamlit الافتراضية */
@@ -39,45 +43,51 @@ header {{visibility: hidden;}}
 .appview-container .main .block-container {{padding-top: 0rem; padding-bottom: 0rem;}}
 
 /* تنسيق زر التحكم بالشريط الجانبي */
-.sidebar-control {{
+.sidebar-toggle-container {{
     position: fixed;
     top: 20px;
     left: 20px;
     z-index: 99999;
-}}
-
-.sidebar-toggle-btn {{
     background: linear-gradient(135deg, #4A5568 0%, #2D3748 100%);
-    color: white;
-    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 50%;
     width: 45px;
     height: 45px;
-    font-size: 22px;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    border: none;
-    outline: none;
+    border: 1px solid rgba(255,255,255,0.2);
 }}
 
-.sidebar-toggle-btn:hover {{
-    transform: scale(1.1);
-    box-shadow: 0 8px 25px rgba(74, 85, 104, 0.5);
-    background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+.sidebar-toggle-container .stCheckbox {{
+    margin: 0;
+    padding: 0;
 }}
 
-/* تنسيق الشريط الجانبي */
-section[data-testid="stSidebar"] {{
-    transition: transform 0.3s ease;
+.sidebar-toggle-container .stCheckbox > div {{
+    padding: 0;
 }}
 
-section[data-testid="stSidebar"].collapsed {{
-    transform: translateX(-100%);
+.sidebar-toggle-container .stCheckbox label {{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}}
+
+.sidebar-toggle-container .stCheckbox label > div:first-child {{
+    display: none;
+}}
+
+.sidebar-toggle-container .stCheckbox label span {{
+    font-size: 24px;
+    color: white;
+    margin: 0;
+    padding: 0;
 }}
 
 .stApp {{
@@ -342,70 +352,52 @@ hr {{
     text-align: center;
 }}
 </style>
-
-<!-- JavaScript للتحكم بالشريط الجانبي -->
-<script>
-function toggleSidebar() {{
-    const sidebar = parent.document.querySelector('section[data-testid="stSidebar"]');
-    const mainContent = parent.document.querySelector('.main');
-    
-    if (sidebar) {{
-        if (sidebar.style.display === 'none') {{
-            sidebar.style.display = 'block';
-            if (mainContent) mainContent.style.marginLeft = '21rem';
-        }} else {{
-            sidebar.style.display = 'none';
-            if (mainContent) mainContent.style.marginLeft = '0';
-        }}
-    }}
-}}
-</script>
 """, unsafe_allow_html=True)
 
 # ==================== SIDEBAR TOGGLE BUTTON ====================
-st.markdown("""
-<div class="sidebar-control">
-    <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Show/Hide Sidebar">☰</button>
-</div>
-""", unsafe_allow_html=True)
+col1, col2, col3 = st.columns([1, 20, 1])
+with col1:
+    toggle = st.checkbox("☰", value=st.session_state.show_sidebar, key="sidebar_toggle", label_visibility="collapsed")
+    st.session_state.show_sidebar = toggle
 
-# ==================== SIDEBAR ====================
-with st.sidebar:
-    st.markdown(f"""
-    <div class="developer-profile">
-        <img src="data:image/jpeg;base64,{profile_image_base64}" class="developer-image" alt="Developer">
-        <div class="developer-name">Mohammad Naser</div>
-    </div> 
-    """, unsafe_allow_html=True)
- 
-    lang = st.radio("Language / اللغة", ["English", "العربية"], index=0, key="language")
+# ==================== SIDEBAR (يظهر فقط إذا كانت show_sidebar = True) ====================
+if st.session_state.show_sidebar:
+    with st.sidebar:
+        st.markdown(f"""
+        <div class="developer-profile">
+            <img src="data:image/jpeg;base64,{profile_image_base64}" class="developer-image" alt="Developer">
+            <div class="developer-name">Mohammad Naser</div>
+        </div> 
+        """, unsafe_allow_html=True)
+     
+        lang = st.radio("Language / اللغة", ["English", "العربية"], index=0, key="language")
+        
+        st.markdown("<hr style='margin: 15px 0;'>", unsafe_allow_html=True)
     
-    st.markdown("<hr style='margin: 15px 0;'>", unsafe_allow_html=True)
-
-    if lang == "English":
-        menu_options = [
-            "📊 Year Analysis",
-            "🏢 Company Analysis",
-            "⚖️ Year Comparison",
-            "🤖 Predictions & Models",
-            "📈 Data Overview"
-        ]
-    else:
-        menu_options = [
-            "📊 تحليل السنوات",
-            "🏢 تحليل الشركات",
-            "⚖️ مقارنة السنوات",
-            "🤖 التوقعات والنماذج",
-            "📈 نظرة عامة"
-        ]
-    
-    menu = st.radio(
-        "Select Analysis" if lang == "English" else "اختر التحليل",
-        menu_options,
-        key="analysis_menu"
-    )
-    
-    st.markdown("<hr style='margin: 15px 0;'>", unsafe_allow_html=True)
+        if lang == "English":
+            menu_options = [
+                "📊 Year Analysis",
+                "🏢 Company Analysis",
+                "⚖️ Year Comparison",
+                "🤖 Predictions & Models",
+                "📈 Data Overview"
+            ]
+        else:
+            menu_options = [
+                "📊 تحليل السنوات",
+                "🏢 تحليل الشركات",
+                "⚖️ مقارنة السنوات",
+                "🤖 التوقعات والنماذج",
+                "📈 نظرة عامة"
+            ]
+        
+        menu = st.radio(
+            "Select Analysis" if lang == "English" else "اختر التحليل",
+            menu_options,
+            key="analysis_menu"
+        )
+        
+        st.markdown("<hr style='margin: 15px 0;'>", unsafe_allow_html=True)
 
 # ==================== DATA LOADING ====================
 @st.cache_data
@@ -413,22 +405,26 @@ def load_data():
     files = {}
     try:
         files['main'] = pd.read_csv('fortune500_cleaned.csv')
-        st.sidebar.success(f"✅ Main: {len(files['main']):,} rows")
+        if st.session_state.show_sidebar:
+            st.sidebar.success(f"✅ Main: {len(files['main']):,} rows")
     except:
         files['main'] = pd.DataFrame()
     try:
         files['pred2024'] = pd.read_csv('fortune500_2024_predictions.csv')
-        st.sidebar.success(f"✅ 2024: {len(files['pred2024']):,} rows")
+        if st.session_state.show_sidebar:
+            st.sidebar.success(f"✅ 2024: {len(files['pred2024']):,} rows")
     except:
         files['pred2024'] = pd.DataFrame()
     try:
         files['models'] = pd.read_csv('fortune500_models_performance.csv')
-        st.sidebar.success(f"✅ Models: {len(files['models'])} models")
+        if st.session_state.show_sidebar:
+            st.sidebar.success(f"✅ Models: {len(files['models'])} models")
     except:
         files['models'] = pd.DataFrame()
     try:
         files['test'] = pd.read_csv('fortune500_test_predictions.csv')
-        st.sidebar.success(f"✅ Test: {len(files['test']):,} rows")
+        if st.session_state.show_sidebar:
+            st.sidebar.success(f"✅ Test: {len(files['test']):,} rows")
     except:
         files['test'] = pd.DataFrame()
     return files
