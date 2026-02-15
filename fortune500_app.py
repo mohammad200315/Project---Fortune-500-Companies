@@ -671,11 +671,8 @@ st.markdown(f"""
             margin-top: 40px;
             border: 1px solid rgba(255,255,255,0.2);
             text-align: center;">
-   
-    
     <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 10px;">
         © 2024 {_('All Rights Reserved', 'جميع الحقوق محفوظة')}
     </p>
-    
 </div>
 """, unsafe_allow_html=True)
