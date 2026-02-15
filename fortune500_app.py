@@ -21,7 +21,7 @@ def get_base64_of_image(image_path):
     return base64.b64encode(data).decode()
 
 # تحميل الصور
-background_image_path = r"WhatsApp Image 2026-02-10 at 1.34.39 PM.jpeg"
+background_image_path = r"WhatsApp Image 2026-02-11 at 3.32.24 PM.jpeg"
 profile_image_path = r"WhatsApp Image 2026-02-10 at 1.34.39 PM.jpeg"  # صورتك الشخصية
 
 background_image_base64 = get_base64_of_image(background_image_path)
