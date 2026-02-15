@@ -10,7 +10,7 @@ warnings.filterwarnings('ignore')
 
 st.set_page_config(
     page_title="Fortune 500 Analytics Dashboard",
-    page_icon="📊",
+    page_icon="icon.jpeg",
     layout="wide",
     initial_sidebar_state="expanded"
 )
