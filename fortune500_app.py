@@ -78,7 +78,8 @@ header {{visibility: hidden;}}
     border: 3px solid #A0AEC0;
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     transition: all 0.3s ease;
-    object-fit: cover;
+    object-fit: contain;  /* تم التغيير من cover إلى contain */
+    background-color: rgba(255,255,255,0.1); /* لون خلفية للصورة */
 }}
 
 .developer-image:hover {{
