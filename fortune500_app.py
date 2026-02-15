@@ -8,7 +8,6 @@ import base64
 import warnings
 warnings.filterwarnings('ignore')
 
-# ==================== PAGE CONFIG ====================
 st.set_page_config(
     page_title="Fortune 500 Analytics Dashboard",
     page_icon="icon.jpeg",
@@ -28,64 +27,15 @@ profile_image_path = r"WhatsApp Image 2026-02-10 at 1.34.39 PM.jpeg"
 background_image_base64 = get_base64_of_image(background_image_path)
 profile_image_base64 = get_base64_of_image(profile_image_path)
 
-# ==================== SESSION STATE ====================
-if 'sidebar_open' not in st.session_state:
-    st.session_state.sidebar_open = True
-
-# ==================== TOGGLE FUNCTION ====================
-def toggle_sidebar():
-    st.session_state.sidebar_open = not st.session_state.sidebar_open
-
-# ==================== CUSTOM CSS ====================
 st.markdown(f"""
 <style>
-/* إخفاء عناصر Streamlit الافتراضية */
+/* إخفاء العناصر الزائدة مع الحفاظ على السهم */
 #MainMenu {{visibility: hidden;}}
 footer {{visibility: hidden;}}
-header {{visibility: hidden;}}
 .stDeployButton {{display: none;}}
 .stAppToolbar {{display: none;}}
-.appview-container .main .block-container {{padding-top: 0rem; padding-bottom: 0rem;}}
 
-/* تنسيق زر التحكم بالشريط الجانبي */
-.sidebar-button {{
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 999999;
-    background: linear-gradient(135deg, #4A5568 0%, #2D3748 100%);
-    color: white;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    font-size: 24px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    border: none;
-}}
-
-.sidebar-button:hover {{
-    transform: scale(1.1);
-    background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-}}
-
-/* تنسيق الشريط الجانبي */
-section[data-testid="stSidebar"] {{
-    transition: margin-left 0.3s ease;
-}}
-
-section[data-testid="stSidebar"][aria-expanded="false"] {{
-    margin-left: -21rem;
-}}
-
-/* خلفية التطبيق */
+/* تنسيق خلفية التطبيق */
 .stApp {{
     background-image: url("data:image/jpeg;base64,{background_image_base64}");
     background-size: cover;
@@ -109,7 +59,7 @@ section[data-testid="stSidebar"][aria-expanded="false"] {{
     border-right: 1px solid rgba(255,255,255,0.15) !important;
 }}
 
-/* تنسيق صورة المطور */
+/* تنسيق صورة المطور في الشريط الجانبي */
 .developer-profile {{
     text-align: center;
     padding: 20px;
@@ -152,6 +102,7 @@ section[data-testid="stSidebar"][aria-expanded="false"] {{
     to {{ opacity: 1; transform: translateY(0); }}
 }}
 
+/* تنسيق البطاقات */
 .custom-card {{
     background: rgba(20, 25, 40, 0.75) !important;
     backdrop-filter: blur(12px) !important;
@@ -169,6 +120,7 @@ section[data-testid="stSidebar"][aria-expanded="false"] {{
     text-shadow: 1px 1px 3px rgba(0,0,0,0.3) !important;
 }}
 
+/* تنسيق الأزرار */
 .stButton > button {{
     background: linear-gradient(135deg, #4A5568 0%, #2D3748 100%) !important;
     color: white !important;
@@ -176,7 +128,6 @@ section[data-testid="stSidebar"][aria-expanded="false"] {{
     border-radius: 12px !important;
     padding: 12px 24px !important;
     font-weight: 600 !important;
-    letter-spacing: 0.5px !important;
     border: 1px solid rgba(255,255,255,0.2) !important;
     transition: all 0.3s ease !important;
 }}
@@ -187,6 +138,7 @@ section[data-testid="stSidebar"][aria-expanded="false"] {{
     background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%) !important;
 }}
 
+/* تنسيق التبويبات */
 .stTabs [data-baseweb="tab-list"] {{
     gap: 12px;
     background: rgba(0,0,0,0.3);
@@ -212,6 +164,7 @@ section[data-testid="stSidebar"][aria-expanded="false"] {{
     box-shadow: 0 4px 12px rgba(74, 85, 104, 0.3);
 }}
 
+/* تنسيق الـ Selectbox */
 .stSelectbox, .stDropdown {{
     background: rgba(30, 35, 50, 0.8);
     border-radius: 12px;
@@ -233,6 +186,7 @@ section[data-testid="stSidebar"][aria-expanded="false"] {{
     border-radius: 8px !important;
 }}
 
+/* تنسيق النصوص */
 h1, h2, h3, h4, h5, h6 {{
     color: #ffffff !important;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
@@ -248,6 +202,7 @@ h1, h2, h3, h4, h5, h6 {{
     text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
 }}
 
+/* تنسيق الـ Metric */
 .stMetric {{
     background: rgba(30, 35, 50, 0.7) !important;
     backdrop-filter: blur(8px) !important;
@@ -271,6 +226,7 @@ h1, h2, h3, h4, h5, h6 {{
     text-shadow: 1px 1px 3px rgba(0,0,0,0.3) !important;
 }}
 
+/* تنسيق الـ DataFrame */
 .dataframe, .stDataFrame {{
     background: rgba(30, 35, 50, 0.8) !important;
     backdrop-filter: blur(8px) !important;
@@ -292,14 +248,7 @@ h1, h2, h3, h4, h5, h6 {{
     font-weight: 600 !important;
 }}
 
-.stSuccess, .stInfo {{
-    background: rgba(30, 35, 50, 0.8) !important;
-    backdrop-filter: blur(8px) !important;
-    color: white !important;
-    border: 1px solid rgba(255,255,255,0.2) !important;
-    border-radius: 12px !important;
-}}
-
+/* تنسيق الـ Radio buttons */
 .stRadio > div {{
     background: rgba(30, 35, 50, 0.6) !important;
     backdrop-filter: blur(8px) !important;
@@ -314,6 +263,7 @@ h1, h2, h3, h4, h5, h6 {{
     padding: 8px !important;
 }}
 
+/* تنسيق الفواصل */
 hr {{
     border: none !important;
     height: 2px !important;
@@ -321,82 +271,53 @@ hr {{
     margin: 30px 0 !important;
 }}
 
-.sidebar-content p, .sidebar-content span, .sidebar-content div {{
-    color: white !important;
-}}
-
+/* تنسيق الـ Number Input */
 .stNumberInput > div > div > input {{
     background: rgba(40, 45, 60, 0.9) !important;
     color: white !important;
     border: 1px solid rgba(255,255,255,0.2) !important;
     border-radius: 8px !important;
 }}
-
-/* تنسيق للشريط الجانبي */
-.sidebar-section {{
-    background: rgba(20, 25, 40, 0.4);
-    backdrop-filter: blur(5px);
-    border-radius: 15px;
-    padding: 15px;
-    margin-bottom: 15px;
-    border: 1px solid rgba(255,255,255,0.1);
-}}
-
-.sidebar-title {{
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    text-align: center;
-}}
 </style>
 """, unsafe_allow_html=True)
 
-# ==================== SIDEBAR TOGGLE BUTTON ====================
-col1, col2, col3 = st.columns([1, 20, 1])
-with col1:
-    if st.button("☰", key="sidebar_btn"):
-        toggle_sidebar()
-        st.rerun()
-
-# ==================== SIDEBAR (يتحكم فيه الزر) ====================
-if st.session_state.sidebar_open:
-    with st.sidebar:
-        st.markdown(f"""
-        <div class="developer-profile">
-            <img src="data:image/jpeg;base64,{profile_image_base64}" class="developer-image" alt="Developer">
-            <div class="developer-name">Mohammad Naser</div>
-        </div> 
-        """, unsafe_allow_html=True)
-     
-        lang = st.radio("Language / اللغة", ["English", "العربية"], index=0, key="language")
-        
-        st.markdown("<hr style='margin: 15px 0;'>", unsafe_allow_html=True)
+# ==================== SIDEBAR ====================
+with st.sidebar:
+    st.markdown(f"""
+    <div class="developer-profile">
+        <img src="data:image/jpeg;base64,{profile_image_base64}" class="developer-image" alt="Developer">
+        <div class="developer-name">Mohammad Naser</div>
+    </div> 
+    """, unsafe_allow_html=True)
+ 
+    lang = st.radio("Language / اللغة", ["English", "العربية"], index=0, key="language")
     
-        if lang == "English":
-            menu_options = [
-                "📊 Year Analysis",
-                "🏢 Company Analysis",
-                "⚖️ Year Comparison",
-                "🤖 Predictions & Models",
-                "📈 Data Overview"
-            ]
-        else:
-            menu_options = [
-                "📊 تحليل السنوات",
-                "🏢 تحليل الشركات",
-                "⚖️ مقارنة السنوات",
-                "🤖 التوقعات والنماذج",
-                "📈 نظرة عامة"
-            ]
-        
-        menu = st.radio(
-            "Select Analysis" if lang == "English" else "اختر التحليل",
-            menu_options,
-            key="analysis_menu"
-        )
-        
-        st.markdown("<hr style='margin: 15px 0;'>", unsafe_allow_html=True)
+    st.markdown("<hr style='margin: 15px 0;'>", unsafe_allow_html=True)
+
+    if lang == "English":
+        menu_options = [
+            "📊 Year Analysis",
+            "🏢 Company Analysis",
+            "⚖️ Year Comparison",
+            "🤖 Predictions & Models",
+            "📈 Data Overview"
+        ]
+    else:
+        menu_options = [
+            "📊 تحليل السنوات",
+            "🏢 تحليل الشركات",
+            "⚖️ مقارنة السنوات",
+            "🤖 التوقعات والنماذج",
+            "📈 نظرة عامة"
+        ]
+    
+    menu = st.radio(
+        "Select Analysis" if lang == "English" else "اختر التحليل",
+        menu_options,
+        key="analysis_menu"
+    )
+    
+    st.markdown("<hr style='margin: 15px 0;'>", unsafe_allow_html=True)
 
 # ==================== DATA LOADING ====================
 @st.cache_data
@@ -404,26 +325,22 @@ def load_data():
     files = {}
     try:
         files['main'] = pd.read_csv('fortune500_cleaned.csv')
-        if st.session_state.sidebar_open:
-            st.sidebar.success(f"✅ Main: {len(files['main']):,} rows")
+        st.sidebar.success(f"✅ Main: {len(files['main']):,} rows")
     except:
         files['main'] = pd.DataFrame()
     try:
         files['pred2024'] = pd.read_csv('fortune500_2024_predictions.csv')
-        if st.session_state.sidebar_open:
-            st.sidebar.success(f"✅ 2024: {len(files['pred2024']):,} rows")
+        st.sidebar.success(f"✅ 2024: {len(files['pred2024']):,} rows")
     except:
         files['pred2024'] = pd.DataFrame()
     try:
         files['models'] = pd.read_csv('fortune500_models_performance.csv')
-        if st.session_state.sidebar_open:
-            st.sidebar.success(f"✅ Models: {len(files['models'])} models")
+        st.sidebar.success(f"✅ Models: {len(files['models'])} models")
     except:
         files['models'] = pd.DataFrame()
     try:
         files['test'] = pd.read_csv('fortune500_test_predictions.csv')
-        if st.session_state.sidebar_open:
-            st.sidebar.success(f"✅ Test: {len(files['test']):,} rows")
+        st.sidebar.success(f"✅ Test: {len(files['test']):,} rows")
     except:
         files['test'] = pd.DataFrame()
     return files
