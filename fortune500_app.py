@@ -671,21 +671,7 @@ st.markdown(f"""
             margin-top: 40px;
             border: 1px solid rgba(255,255,255,0.2);
             text-align: center;">
-    <p style="color: white; font-size: 1.3rem; margin-bottom: 15px; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
-        <strong>{_('Fortune 500 Analytics Dashboard', 'لوحة تحليل Fortune 500')}</strong>
-    </p>
-    <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 15px; flex-wrap: wrap;">
-        <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem;">
-            {_('Developed by: Mohammad Naser', 'تم التطوير بواسطة: محمد زكريا ناصر')}
-        </p>
-        <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem;">
-            {_('Data Analyst', 'محلل بيانات')}
-        </p>
-    </div>
-    <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 15px; flex-wrap: wrap;">
-        <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">
-            1996-2024
-        </p>
+    
         <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">
             {_('Powered by Streamlit & Plotly', 'بتقنية Streamlit و Plotly')}
         </p>
